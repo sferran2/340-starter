@@ -6,7 +6,7 @@ const Util = {}
  ************************** */
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications()
-  console.log(data)
+  //console.log(data)
   let list = "<ul>"
   list += '<li><a href="/" title="Home page">Home</a></li>'
   data.rows.forEach((row) => {
@@ -53,10 +53,47 @@ Util.buildClassificationGrid = async function(data){
     })
     grid += '</ul>'
   } else { 
-    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+    grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>'
   }
   return grid
 }
+
+/* ***************************
+ * Build the inventory detail view HTML
+ * ************************** */
+Util.buildVehicleDetail = async function (vehicle) {
+  // Format price as US dollars
+  const price = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(vehicle.inv_price)
+
+  // Format mileage with commas
+  const miles = new Intl.NumberFormat("en-US").format(vehicle.inv_miles)
+
+  let detailHTML = `
+    <section class="vehicle-detail">
+      <div class="vehicle-detail__image">
+        <img src="${vehicle.inv_image}" alt="${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}" />
+      </div>
+
+      <div class="vehicle-detail__content">
+        <h2 class="vehicle-detail__title">${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
+
+        <p class="vehicle-detail__price"><strong>Price:</strong> ${price}</p>
+        <p class="vehicle-detail__miles"><strong>Mileage:</strong> ${miles} miles</p>
+        <p class="vehicle-detail__color"><strong>Color:</strong> ${vehicle.inv_color}</p>
+
+        <div class="vehicle-detail__description">
+          <h3>Description</h3>
+          <p>${vehicle.inv_description}</p>
+        </div>
+      </div>
+    </section>
+  `
+  return detailHTML
+}
+
 
 /* ****************************************
  * Middleware For Handling Errors

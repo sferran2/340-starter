@@ -520,3 +520,49 @@ main h1 {
   white-space: nowrap;
   border: 0;
 }
+
+/***********************************
+ * Vehicle Detail View
+ ***********************************/
+.vehicle-detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+  margin: 1rem 0;
+}
+
+.vehicle-detail__image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+  padding: 2rem;
+}
+
+/* Make key info prominent */
+.vehicle-detail__title {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  padding: 1rem;
+}
+
+.vehicle-detail__price,
+.vehicle-detail__miles,
+.vehicle-detail__color {
+  margin: 0.25rem 0;
+  font-size: 1.05rem;
+}
+
+.vehicle-detail__description {
+  margin-top: 1rem;
+  margin-right: 2rem;
+  padding: 1.5px;
+}
+
+/* Large screens: image + content side-by-side */
+@media (min-width: 768px) {
+  .vehicle-detail {
+    grid-template-columns: 1fr 1fr;
+  }
+}
