@@ -50,8 +50,9 @@ app.use((req, res, next) => {
  * Local Server Information
  * Values from .env (environment) file
  *************************/
-const port = process.env.PORT
+
 const host = process.env.HOST
+const port = process.env.PORT || 5500
 
 /* ***********************
 * Express Error Handler
