@@ -566,3 +566,14 @@ main h1 {
     grid-template-columns: 1fr 1fr;
   }
 }
+/* Footer error link */
+
+footer a.error-link {
+  color: black;
+  font-weight: bold;
+}
+
+footer a.error-link:hover {
+  color: #ff5252;
+  text-decoration: underline;
+}
