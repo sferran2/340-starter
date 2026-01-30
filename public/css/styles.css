@@ -577,3 +577,158 @@ footer a.error-link:hover {
   color: #ff5252;
   text-decoration: underline;
 }
+
+/*****************************************
+ * Account Views (lOgin and Registration)
+ *****************************************/
+
+ .account {
+   max-width: 520px;
+   margin: 2rem auto;
+   padding: 1.5rem;
+   background: #ffffff;
+   border: 2px solid #540b0e;
+   border-radius: 10px;
+   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+ }
+
+ .account h1 {
+  margin: 0 0 1rem;
+  font-size: 1.8rem;
+  color: #1585a3;
+  text-align: center;
+  text-transform: uppercase;
+   
+ }
+
+ .account__form {
+   display: grid;
+   gap: 0.8rem;
+   margin-top: 1rem;
+ }
+
+ .account__form label {
+   font-weight: 700;
+   color: #335c67;
+ }
+
+ .account__form input {
+   width: 100%;
+   padding: 0.65rem 0.75rem;
+   border: 2px solid #335c67;
+   border-radius: 8px;
+   font-size: 1rem;
+   background: #fffdf5;
+ }
+
+ .account__form input:focus {
+   outline: none;
+   border-color: #540b0e;
+   box-shadow: 0 0 0 3px rgba(84, 11, 14, 0.2);
+ }
+
+ .account__btn {
+   margin-top: 0.5rem;
+   padding: 0.8rem 1rem;
+   border: none;
+   border-radius: 8px;
+   font-size: 1rem;
+   font-weight: 700;
+   cursor: pointer;
+   background: #f0c977;
+   color: #000;
+   transition: transform 0.05s ease-in-out, opacity 0.15s ease-in-out;
+ }
+
+ .account__btn:hover {
+  opacity: 0.95;
+  background-color: #1585a3;
+ }
+
+ .account__btn:active {
+   transform: translateY(1px);
+ }
+
+ .account__note {
+   margin-top: 1rem;
+   text-align: center;
+   color: #335c67;
+ }
+
+ .account__link {
+   color: black;
+   font-weight: 700;
+   text-decoration: underline;
+ }
+
+ .account__link:hover {
+   text-decoration: none;
+ }
+
+ /* Small screens */
+ @media (max-width: 480px) {
+   .account {
+     margin: 1rem;
+     padding: 1.25rem;
+   }
+
+   .account h1 {
+     font-size: 1.5rem;
+   }
+ }
+ /* Password field with toggle button */
+ .account__password {
+   display: grid;
+   grid-template-columns: 1fr auto;
+   gap: 0.5rem;
+   align-items: center;
+ }
+
+ .account__toggle {
+   padding: 0.65rem 0.8rem;
+   border-radius: 8px;
+   font-weight: 700;
+   background: #f0c977;
+   color: black;
+   cursor: pointer;
+   border: none;
+ }
+
+ .account__toggle:hover {
+   opacity: 0.95;
+ }
+
+ /* Account rules list */
+ .account__rules {
+  margin: 0.4rem 0 0.6rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  color: #335c67;
+  line-height: 1.4;
+  border-left: 4px solid #540b0e;
+  border-radius: 6px;
+  list-style: none;
+ }
+
+ .account__rules li {
+   margin: 0.2rem 0;
+ }
+ .account-rules strong {
+   color: #540b0e;
+ }
+
+ /* Password rules message */
+ .password-rules {
+   margin: 0.4rem 0 0.6rem;
+   padding: 0.6rem 0.8rem;
+   font-size: 0.9rem;
+   line-height: 1.4;
+   color: #335c67;
+   border-left: 4px solid #540b0e;
+   border-radius: 6px;
+ }
+
+ .password-rules strong {
+   color: #540b0e;
+ }
+

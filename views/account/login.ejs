@@ -1,0 +1,21 @@
+<section class="account">
+    <h1>
+        <%= title %>
+    </h1>
+    <%- messages() %>
+
+        <form class="account__form" action="#" method="post">
+            <label for="account_email">Email</label>
+            <input type="email" id="account_email" name="account_email" required>
+
+            <label for="account_password">Password</label>
+            <input type="password" id="account_password" name="account_password" required>
+
+            <button class="account__btn" type="submit">Login</button>
+        </form>
+
+        <p class="account__note">
+            No account?
+            <a class="account__link" href="/account/register">Register here</a>
+        </p>
+</section>

@@ -1,0 +1,69 @@
+<section class="account">
+    <h1>
+        <%= title %>
+    </h1>
+    <%- messages() %>
+
+    <% if (errors) { %>
+        <ul class="notice">
+            <% errors.array().forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+        <form class="account__form" action="/account/register" method="post">
+            <label for="account_firstname">First Name</label>
+            <input type="text" id="account_firstname" name="account_firstname" required autocomplete="given-name">
+
+            <label for="account_lastname">Last Name</label>
+            <input type="text" id="account_lastname" name="account_lastname" required autocomplete="family-name">
+
+            <label for="account_email">Email</label>
+            <input type="email" id="account_email" name="account_email" required autocomplete="email">
+
+            <label for="account_password">Password</label>
+            
+            <div class="password-rules">
+                Passwords must be at least <strong>12 characters</strong> and contain at least
+                <strong>1 uppercase letter</strong>, <strong>1 number</strong>, and
+                <strong>1 special character</strong>.
+            </div>
+            
+            <div class="account__password">
+                <input type="password" id="account_password" name="account_password" required
+                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" autocomplete="new-password">
+                <button class="account__toggle" type="button" aria-controls="account_password" aria-pressed="false">
+                    Show
+                </button>
+            </div>
+
+
+            <ul class="account__rules" aria-label="Password requirements">
+                <li>All fields are required.</li>
+            </ul>
+
+            <button class="account__btn" type="submit">Create Account</button>
+        </form>
+
+        <p class="account__note">
+            Already have an account?
+            <a class="account__link" href="/account/login">Login</a>
+        </p>
+</section>
+
+<script>
+    const toggleBtn = document.querySelector(".account__toggle")
+    const pwdInput = document.querySelector("#account_password")
+
+    if (toggleBtn && pwdInput) {
+        toggleBtn.addEventListener("click", () => {
+            const isPassword = pwdInput.type === "password"
+            pwdInput.type = isPassword ? "text" : "password"
+            toggleBtn.textContent = isPassword ? "Hide" : "Show"
+            toggleBtn.setAttribute("aria-pressed", String(isPassword))
+        })
+    }
+</script>
