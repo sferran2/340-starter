@@ -732,3 +732,180 @@ footer a.error-link:hover {
    color: #540b0e;
  }
 
+ /*****************************************
+ * Inventory Management + Add Forms
+ *****************************************/
+
+ .inventory {
+   max-width: 900px;
+   margin: 2rem auto;
+   padding: 1.5rem;
+   background: #ffffff;
+   border: 2px solid #540b0e;
+   border-radius: 10px;
+   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+ }
+
+ .inventory h1 {
+   margin: 0 0 1.25rem;
+   text-align: center;
+   color: #335c67;
+   font-size: 1.8rem;
+ }
+
+ /* Messages area (errors list you already render as .notice) */
+ .notice {
+   margin: 0 0 1rem;
+   padding: 0.75rem 0.9rem;
+   border-left: 5px solid #540b0e;
+   background: rgba(240, 201, 119, 0.35);
+   border-radius: 8px;
+   list-style: none;
+ }
+
+ .notice li {
+   margin: 0.25rem 0;
+   color: #540b0e;
+   font-weight: 700;
+ }
+
+ /* Hint text under titles (like classification rule note) */
+ .form-hint {
+   margin: 0 0 0.75rem;
+   padding: 0.6rem 0.8rem;
+   border-left: 4px solid #335c67;
+   background: rgba(51, 92, 103, 0.08);
+   border-radius: 6px;
+   color: #335c67;
+   font-size: 0.95rem;
+ }
+
+ /* Forms */
+ .inventory__form {
+   display: grid;
+   gap: 0.85rem;
+   margin-top: 1rem;
+ }
+
+ .inventory__form label {
+   font-weight: 700;
+   color: #335c67;
+   grid-column: 1 / -1;
+ }
+
+ .inventory__form input,
+ .inventory__form textarea,
+ .inventory__form select {
+   width: 100%;
+   padding: 0.65rem 0.75rem;
+   border: 2px solid #335c67;
+   border-radius: 8px;
+   font-size: 1rem;
+   background: #fffdf5;
+ }
+
+ .inventory__form textarea {
+   min-height: 110px;
+   resize: vertical;
+ }
+
+ .inventory__form input:focus,
+ .inventory__form textarea:focus,
+ .inventory__form select:focus {
+   outline: none;
+   border-color: #540b0e;
+   box-shadow: 0 0 0 3px rgba(84, 11, 14, 0.2);
+ }
+
+ .inventory .notice {
+   margin-bottom: 1.5rem;
+   padding: 1rem;
+ }
+
+ /* Buttons */
+ .inventory__form button {
+   margin-top: 1rem;
+   padding: 0.8rem 1rem;
+   border: none;
+   border-radius: 8px;
+   font-size: 1rem;
+   font-weight: 800;
+   cursor: pointer;
+   background: #f0c977;
+   color: #000;
+   transition: opacity 0.15s ease-in-out, transform 0.05s ease-in-out;
+ }
+
+ .inventory__form button:hover {
+   background: #1585a3;
+   color: #fff;
+   opacity: 0.98;
+ }
+
+ .inventory__form button:active {
+   transform: translateY(1px);
+ }
+
+ /* Management links layout */
+ .inventory ul {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+   display: grid;
+   gap: 0.75rem;
+ }
+
+ .inventory ul li a {
+   display: block;
+   text-align: center;
+   padding: 0.9rem 1rem;
+   border: 2px solid #335c67;
+   border-radius: 10px;
+   text-decoration: none;
+   font-weight: 800;
+   color: #335c67;
+   background: rgba(51, 92, 103, 0.06);
+ }
+
+ .inventory ul li a:hover {
+   border-color: #540b0e;
+   background: rgba(240, 201, 119, 0.35);
+ }
+
+ /* Responsive */
+ @media (max-width: 520px) {
+   .inventory {
+     margin: 1rem;
+     padding: 1.25rem;
+   }
+
+   .inventory h1 {
+     font-size: 1.5rem;
+   }
+ }
+
+ /*****************************************
+ * Add Inventory: responsive two-column layout
+ *****************************************/
+
+ /* Only affects pages that have the inventory form */
+ @media (min-width: 800px) {
+   .inventory__form {
+     grid-template-columns: 1fr 1fr;
+     column-gap: 1.25rem;
+   }
+
+   /* Make these span full width */
+   .inventory__form label[for="classificationList"],
+   #classificationList,
+   .inventory__form label[for="inv_description"],
+   #inv_description,
+   .inventory__form label[for="inv_image"],
+   #inv_image,
+   .inventory__form label[for="inv_thumbnail"],
+   #inv_thumbnail,
+   .inventory__form button {
+     grid-column: 1 / -1;
+   }
+ }
+
