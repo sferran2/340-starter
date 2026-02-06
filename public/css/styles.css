@@ -924,11 +924,12 @@ footer a.error-link:hover {
 #inventoryDisplay {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   border: 2px solid #2f5d62;
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
+  table-layout: fixed;
 }
 
 #inventoryDisplay thead th {
@@ -942,13 +943,27 @@ footer a.error-link:hover {
 #inventoryDisplay tbody td {
   padding: 0.75rem 0.85rem;
   border-top: 1px solid #d7e3e5;
+  vertical-align: middle;
 }
 
 #inventoryDisplay tbody tr:nth-child(even) {
   background: #f6fbfb;
 }
 
-#inventoryDisplay a {
+/* Column sizing: Name wide, actions fixed and centered */
+#inventoryDisplay th:nth-child(2),
+#inventoryDisplay td:nth-child(2),
+#inventoryDisplay th:nth-child(3),
+#inventoryDisplay td:nth-child(3) {
+  width: 160px;
+  text-align: center;
+}
+
+/* Action buttons consistent size */
+#inventoryDisplay td:nth-child(2) a,
+#inventoryDisplay td:nth-child(3) a {
+  width: 110px;
+  text-align: center;
   display: inline-block;
   padding: 0.35rem 0.6rem;
   border: 2px solid #2f5d62;
@@ -959,20 +974,10 @@ footer a.error-link:hover {
   background: #f5f5f5;
 }
 
-#inventoryDisplay a:hover {
+#inventoryDisplay td:nth-child(2) a:hover,
+#inventoryDisplay td:nth-child(3) a:hover {
   background: #e9f0f1;
   text-decoration: underline;
-}
-
-.inventory__form button:disabled {
-  background: #e0e0e0;
-  /* gris claro */
-  color: #777;
-  /* texto apagado */
-  cursor: not-allowed;
-  /* 🚫 */
-  opacity: 0.7;
-  box-shadow: none;
 }
 
 /* Small screens */
@@ -994,4 +999,130 @@ footer a.error-link:hover {
   .inventory h1 {
     font-size: 1.5rem;
   }
+}
+
+/* Make the classification select match the big buttons */
+.management-select-wrap select {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+
+  padding: 0.9rem 1rem;
+  border: 2px solid #335c67;
+  border-radius: 10px;
+  background: rgba(51, 92, 103, 0.06);
+
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #335c67;
+
+  margin: 0.75rem 0 1.25rem;
+}
+
+.management-select-wrap select:hover {
+  border-color: #540b0e;
+  background: rgba(240, 201, 119, 0.35);
+  cursor: pointer;
+}
+
+.management-select-wrap select:focus {
+  outline: none;
+  border-color: #540b0e;
+  box-shadow: 0 0 0 3px rgba(84, 11, 14, 0.2);
+}
+
+/* Account Management + Update Account */
+
+/* Links inside account section */
+.account a {
+  color: #000;
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.account a:hover {
+  text-decoration: none;
+  color: #540b0e;
+}
+
+/* Headings in account section */
+.account h2 {
+  margin: 1rem 0 0.75rem;
+  color: #335c67;
+  text-align: center;
+}
+
+.account h3 {
+  margin: 1.25rem 0 0.5rem;
+  color: #335c67;
+  text-align: center;
+}
+
+/* Make account paragraphs look consistent */
+.account p {
+  margin: 0.5rem 0;
+  text-align: center;
+  color: #335c67;
+  font-size: 1.05rem;
+}
+
+/* Two-form layout helpers (update-account view) */
+.account__section {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 2px dashed rgba(51, 92, 103, 0.35);
+}
+
+.account__section-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #540b0e;
+  text-align: left;
+}
+
+/* Readonly inputs (delete-confirm / update account if used) */
+.account__form input[readonly],
+.account__form textarea[readonly] {
+  background: #f1f1f1;
+  border-color: #bdbdbd;
+  color: #444;
+}
+
+/* Help text under fields */
+.account__help {
+  margin: 0.15rem 0 0.75rem;
+  font-size: 0.9rem;
+  color: #335c67;
+  text-align: left;
+  line-height: 1.35;
+  padding-left: 0.5rem;
+  border-left: 4px solid #540b0e;
+}
+
+/* Buttons inside account forms (in case you didn't add .account__btn) */
+.account__form button,
+.account__form input[type="submit"] {
+  margin-top: 0.5rem;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  background: #f0c977;
+  color: #000;
+  transition: opacity 0.15s ease-in-out, transform 0.05s ease-in-out;
+}
+
+.account__form button:hover,
+.account__form input[type="submit"]:hover {
+  background: #1585a3;
+  color: #fff;
+  opacity: 0.98;
+}
+
+.account__form button:active,
+.account__form input[type="submit"]:active {
+  transform: translateY(1px);
 }

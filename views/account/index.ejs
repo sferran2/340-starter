@@ -1,5 +1,7 @@
 <section class="account">
-    <h1><%= title %></h1>
+    <h1>
+        <%= title %>
+    </h1>
 
     <%- messages() %>
 
@@ -13,5 +15,26 @@
             </ul>
             <% } %>
 
-                <p>You're logged in</p>
+            
+                <!-- Greeting + Inventory ONLY for Employee/Admin -->
+                <% if ( locals.accountData.account_type==="Employee" || locals.accountData.account_type==="Admin" ) { %>
+
+                    <h2>Welcome <%= locals.accountData.account_firstname %>
+                    </h2>
+
+                    <!-- Update link for ALL users -->
+                    <p>
+                        <a href="/account/update/<%= locals.accountData.account_id %>">
+                            Update Account Information
+                        </a>
+                    </p>
+
+                    <h3>Inventory Management</h3>
+                    <p>
+                        <a href="/inv/">Go to Inventory Management</a>
+                    </p>
+
+                    <% } %>
+
+                
 </section>

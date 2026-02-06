@@ -1,0 +1,67 @@
+<section class="account">
+    <h1>
+        <%= title %>
+    </h1>
+
+    <%- messages() %>
+
+        <% if (typeof errors !=="undefined" && errors) { %>
+            <ul class="notice">
+                <% errors.forEach(error=> { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+
+                <!-- Account Update Form -->
+                <h2>Account Update</h2>
+
+                <form class="account__form" action="/account/update" method="post" novalidate>
+                    <input type="hidden" name="account_id"
+                        value="<%= locals.account_id || (locals.accountData && locals.accountData.account_id) || '' %>">
+
+                    <label for="account_firstname">First Name</label>
+                    <input type="text" id="account_firstname" name="account_firstname" required
+                        autocomplete="given-name"
+                        value="<%= locals.account_firstname || (locals.accountData && locals.accountData.account_firstname) || '' %>">
+
+                    <label for="account_lastname">Last Name</label>
+                    <input type="text" id="account_lastname" name="account_lastname" required autocomplete="family-name"
+                        value="<%= locals.account_lastname || (locals.accountData && locals.accountData.account_lastname) || '' %>">
+
+                    <label for="account_email">Email</label>
+                    <input type="email" id="account_email" name="account_email" required autocomplete="email"
+                        value="<%= locals.account_email || (locals.accountData && locals.accountData.account_email) || '' %>">
+
+                    <button type="submit">Update Account</button>
+                </form>
+
+                <hr>
+
+                <!-- Change Password Form -->
+                <h2>Change Password</h2>
+
+                <p class="password-rules">
+                    Enter a new password to replace your current password. Passwords must be at least 12 characters and
+                    include at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.
+                </p>
+
+                <form class="account__form" action="/account/update-password" method="post" novalidate>
+                    <input type="hidden" name="account_id"
+                        value="<%= locals.account_id || (locals.accountData && locals.accountData.account_id) || '' %>">
+
+                    <label for="account_password">New Password</label>
+                    <input type="password" id="account_password" name="account_password" required
+                        autocomplete="new-password"
+                        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" minlength="12"
+                        aria-describedby="passwordHelp">
+
+                    <small id="passwordHelp">
+                        Must be at least 12 characters and include uppercase, lowercase, number, and special character.
+                    </small>
+
+                    <button type="submit">Change Password</button>
+                </form>
+</section>

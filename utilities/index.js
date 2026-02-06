@@ -147,6 +147,34 @@ Util.checkJWTToken = (req, res, next) => {
 }
 
 /* ****************************************
+*  Check Employee or Admin Authorization
+**************************************** */
+Util.checkAdminAccess = async (req, res, next) => {
+  try {
+    // Must be logged in and have accountData
+    if (res.locals.loggedin && res.locals.accountData) {
+      const accountType = res.locals.accountData.account_type
+      if (accountType === "Employee" || accountType === "Admin") {
+        return next()
+      }
+    }
+
+    // Not authorized
+    req.flash("notice", "Please log in with an Employee or Admin account to access Inventory Management.")
+    let nav = await Util.getNav()
+    return res.status(403).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+      account_email: null,
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+
+/* ****************************************
  *  Check Login
  * ************************************ */
 Util.checkLogin = (req, res, next) => {
