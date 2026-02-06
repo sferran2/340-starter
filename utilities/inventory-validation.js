@@ -3,6 +3,9 @@ const { body, validationResult } = require("express-validator")
 
 const validate = {}
 
+/* ***************************
+ * Classification Rules
+ * ************************** */
 validate.classificationRules = () => {
   return [
     body("classification_name")
@@ -10,12 +13,16 @@ validate.classificationRules = () => {
       .isLength({ min: 1 })
       .withMessage("Classification name is required.")
       .matches(/^[A-Za-z0-9]+$/)
-      .withMessage("Classification name must contain only letters and numbers (no spaces or special characters)."),
+      .withMessage(
+        "Classification name must contain only letters and numbers (no spaces or special characters)."
+      ),
   ]
 }
 
+/* ***************************
+ * Check Classification Data
+ * ************************** */
 validate.checkClassificationData = async (req, res, next) => {
-  const { classification_name } = req.body
   let errors = validationResult(req)
 
   if (!errors.isEmpty()) {
@@ -29,6 +36,9 @@ validate.checkClassificationData = async (req, res, next) => {
   next()
 }
 
+/* ***************************
+ * Inventory Rules (Add + Update)
+ * ************************** */
 validate.inventoryRules = () => {
   return [
     body("classification_id")
@@ -82,6 +92,9 @@ validate.inventoryRules = () => {
   ]
 }
 
+/* ***************************
+ * Check Inventory Data (Add)
+ * ************************** */
 validate.checkInventoryData = async (req, res, next) => {
   const {
     classification_id,
@@ -100,17 +113,13 @@ validate.checkInventoryData = async (req, res, next) => {
 
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
-
-    // rebuild dropdown with selected classification_id (sticky select)
     let classificationSelect = await utilities.buildClassificationList(classification_id)
 
-    return res.render("inventory/add-inventory", {
+    return res.status(400).render("inventory/add-inventory", {
       title: "Add Inventory",
       nav,
       classificationSelect,
       errors: errors.array(),
-
-      // sticky fields
       classification_id,
       inv_make,
       inv_model,
@@ -126,6 +135,51 @@ validate.checkInventoryData = async (req, res, next) => {
   next()
 }
 
+/* *****************************
+ * Check Inventory Data (Update)
+ * Return errors to edit view
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const {
+    inv_id,
+    classification_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+  } = req.body
 
+  let errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    let classificationSelect = await utilities.buildClassificationList(classification_id)
+    const itemName = `${inv_make} ${inv_model}`
+
+    return res.status(400).render("inventory/edit-inventory", {
+      title: "Edit " + itemName,
+      nav,
+      classificationSelect,
+      errors: errors.array(),
+      inv_id,
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+    })
+  }
+  next()
+}
 
 module.exports = validate

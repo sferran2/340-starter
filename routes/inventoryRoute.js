@@ -21,18 +21,30 @@ router.get(
   utilities.handleErrors(invController.buildAddClassification)
 )
 
-// Route to add new classification
-router.post(
-  "/add-classification",
-  invValidate.classificationRules(),
-  invValidate.checkClassificationData,
-  utilities.handleErrors(invController.addClassification)
+// Return inventory items as JSON based on selected classification (AJAX)
+router.get(
+  "/getInventory/:classification_id",
+  utilities.handleErrors(invController.getInventoryJSON)
 )
 
 // Route to build add inventory view
 router.get(
   "/add-inventory",
   utilities.handleErrors(invController.buildAddInventory)
+)
+
+// Deliver edit inventory view
+router.get(
+  "/edit/:inv_id",
+  utilities.handleErrors(invController.editInventoryView)
+)
+
+// Route to add new classification
+router.post(
+  "/add-classification",
+  invValidate.classificationRules(),
+  invValidate.checkClassificationData,
+  utilities.handleErrors(invController.addClassification)
 )
 
 // Route to add new inventory item
@@ -42,8 +54,13 @@ router.post(
   invValidate.checkInventoryData,
   utilities.handleErrors(invController.addInventory)
 )
-
-
+// Process inventory update
+router.post(
+  "/update",
+  invValidate.inventoryRules(),
+  invValidate.checkUpdateData,
+  utilities.handleErrors(invController.updateInventory)
+)
 
 
 module.exports = router;
