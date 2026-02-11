@@ -4,8 +4,14 @@
     </h1>
     <div class="header-links">
         <% if (locals.loggedin) { %>
-            <a href="/account/">Welcome Basic</a>
-            <a href="/account/logout">Logout</a>
+            <div class="user-tools">
+                <a href="/account/" class="welcome-link">
+                    Welcome <%= locals.accountData.account_firstname %>
+                </a>
+                <a href="/account/logout" class="logout-link">
+                    Logout
+                </a>
+            </div>
             <% } else { %>
                 <a href="/account/login">My Account</a>
                 <% } %>

@@ -665,6 +665,24 @@ footer a.error-link:hover {
    text-decoration: none;
  }
 
+ .user-tools {
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end;
+   gap: 0.25rem;
+ }
+
+ .user-tools a {
+   text-decoration: underline;
+   font-weight: bold;
+ }
+
+ .logout-link {
+   font-size: 0.9rem;
+   font-weight: normal;
+ }
+
+
  /* Small screens */
  @media (max-width: 480px) {
    .account {
