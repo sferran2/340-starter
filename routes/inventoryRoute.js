@@ -76,12 +76,39 @@ router.post(
   utilities.handleErrors(invController.updateInventory)
 )
 
-
 // Process the delete
 router.post(
   "/delete",
   utilities.checkAdminAccess,
   utilities.handleErrors(invController.deleteInventoryItem)
+)
+
+// update inventory status
+router.post(
+  "/status",
+  utilities.checkAdminAccess,
+  invValidate.statusRules(),
+  invValidate.checkStatusData,
+  utilities.handleErrors(invController.updateStatus)
+)
+
+// Add a review (logged-in users)
+router.post(
+  "/add-review",
+  utilities.checkLogin,
+  utilities.checkClientAccess,
+  invValidate.reviewRules(),
+  invValidate.checkReviewData,
+  utilities.handleErrors(invController.addReview)
+)
+
+// Add dealer response to a review (Employee/Admin only)
+router.post(
+  "/add-response",
+  utilities.checkAdminAccess,
+  invValidate.responseRules(),
+  invValidate.checkResponseData,
+  utilities.handleErrors(invController.addReviewResponse)
 )
 
 

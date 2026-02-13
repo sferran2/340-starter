@@ -1,7 +1,127 @@
 <% if (vehicle) { %>
+
     <div class="vehicle-detail-wrapper">
         <%- vehicle %>
     </div>
+
+    <section class="reviews">
+        <h2>Reviews</h2>
+
+        <% if (typeof errors !=="undefined" && errors) { %>
+            <ul class="notice">
+                <% errors.forEach(error=> { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+
+                <!-- Reviews List FIRST -->
+                <% if (reviews && reviews.length> 0) { %>
+                    <ul class="review-list">
+                        <% reviews.forEach(r=> { %>
+
+                            <li class="review-item">
+
+                                <!-- Reviewer Info -->
+                                <p>
+                                    <strong>
+                                        <%= r.account_firstname %>
+                                            <%= r.account_lastname %>
+                                    </strong>
+                                    — <%= r.rating %>/5
+                                </p>
+
+                                <!-- Review Text -->
+                                <p>
+                                    <%= r.review_text %>
+                                </p>
+
+                                <!-- Review Date -->
+                                <p class="small">
+                                    <%= new Date(r.created_at).toLocaleDateString() %>
+                                </p>
+
+                                <!-- Dealer Response (if exists) -->
+                                <% if (r.response_text) { %>
+                                    <div class="review-response">
+                                        <p>
+                                            <strong>Dealer response:</strong>
+                                            <%= r.response_text %>
+                                        </p>
+
+                                        <p class="small">
+                                            Responded by
+                                            <%= r.responder_firstname || "" %>
+                                                <%= r.responder_lastname || "" %>
+                                                    <% if (r.responded_at) { %>
+                                                        on <%= new Date(r.responded_at).toLocaleDateString() %>
+                                                            <% } %>
+                                        </p>
+                                    </div>
+                                    <% } %>
+
+                                        <!-- Employee/Admin Response Form -->
+                                        <% if (locals.loggedin && locals.accountData &&
+                                            (locals.accountData.account_type==="Employee" ||
+                                            locals.accountData.account_type==="Admin" )) { %>
+
+                                            <form class="response-form" action="/inv/add-response" method="post">
+                                                <input type="hidden" name="inv_id" value="<%= inv_id %>">
+                                                <input type="hidden" name="review_id" value="<%= r.review_id %>">
+
+                                                <label for="response_<%= r.review_id %>">Dealer Response</label>
+                                                <textarea id="response_<%= r.review_id %>" name="response_text"
+                                                    minlength="3" required></textarea>
+
+                                                <button type="submit">Save Response</button>
+                                            </form>
+
+                                            <% } %>
+
+                            </li>
+
+                            <% }) %>
+                    </ul>
+
+                    <% } else { %>
+
+                        <p>No reviews yet. Be the first!</p>
+
+                        <% } %>
+
+                            <!-- Client Review Form AFTER list -->
+                            <% if (locals.loggedin && locals.accountData && locals.accountData.account_type==="Client" )
+                                { %>
+
+                                <form class="review-form" action="/inv/add-review" method="post">
+                                    <input type="hidden" name="inv_id" value="<%= inv_id %>">
+
+                                    <label for="rating">Rating (1–5)</label>
+                                    <select id="rating" name="rating" required>
+                                        <option value="">Choose</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+
+                                    <label for="review_text">Your Review</label>
+                                    <textarea id="review_text" name="review_text" required minlength="5"></textarea>
+
+                                    <button type="submit">Submit Review</button>
+                                </form>
+
+                                <% } else if (!locals.loggedin) { %>
+                                    <p class="notice">Please log in to leave a review.</p>
+                                <% } %>
+
+    </section>
+
     <% } else { %>
+
         <p class="notice">Sorry, that vehicle could not be found.</p>
+
         <% } %>

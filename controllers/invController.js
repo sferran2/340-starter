@@ -1,8 +1,8 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
-
-
 const invCont = {}
+const reviewModel = require("../models/reviews-model")
+
 
 // Build inventory by classification view
 
@@ -30,21 +30,27 @@ invCont.buildDetail = async function (req, res, next) {
         title: "Vehicle Not Found",
         nav,
         vehicle: null,
+        reviews: [],
+        inv_id: null,
       })
     }
 
     const vehicleHTML = await utilities.buildVehicleDetail(data)
+    const reviews = await reviewModel.getReviewsByInvId(inv_id)
     let nav = await utilities.getNav()
 
     res.render("./inventory/detail", {
       title: `${data.inv_make} ${data.inv_model}`,
       nav,
       vehicle: vehicleHTML,
+      reviews,
+      inv_id, 
     })
   } catch (error) {
     next(error)
   }
 }
+
 
 // Build add classification view
 invCont.buildAddClassification = async function (req, res, next) {
@@ -224,6 +230,7 @@ invCont.editInventoryView = async function (req, res, next) {
     inv_miles: itemData.inv_miles,
     inv_color: itemData.inv_color,
     classification_id: itemData.classification_id,
+    inv_status: itemData.inv_status, 
   })
 }
 
@@ -258,6 +265,7 @@ invCont.updateInventory = async function (req, res, next) {
 
   const {
     inv_id,
+    inv_status,
     inv_make,
     inv_model,
     inv_description,
@@ -272,6 +280,7 @@ invCont.updateInventory = async function (req, res, next) {
 
   const updateResult = await invModel.updateInventory(
     inv_id,
+    inv_status,
     inv_make,
     inv_model,
     inv_description,
@@ -298,6 +307,7 @@ invCont.updateInventory = async function (req, res, next) {
       classificationSelect,
       errors: null,
       inv_id,
+      inv_status,
       inv_make,
       inv_model,
       inv_year,
@@ -328,6 +338,59 @@ invCont.deleteInventoryItem = async function (req, res, next) {
     return res.redirect(`/inv/delete/${inv_id}`)
   }
 }
+
+// Update Vehicle Status
+
+invCont.updateStatus = async function (req, res) {
+  try {
+    const { inv_id, inv_status } = req.body
+
+    const updatedVehicle = await invModel.updateVehicleStatus(inv_id, inv_status)
+
+    if (!updatedVehicle) {
+      req.flash("notice", "Sorry, the status update failed.")
+      return res.redirect("back")
+    }
+
+    req.flash("notice", "Vehicle status updated successfully.")
+    return res.redirect(`/inv/detail/${inv_id}`)
+  } catch (error) {
+    console.error(error)
+    req.flash("notice", "Server error: status update failed.")
+    return res.redirect("back")
+  }
+}
+
+// Add Review
+invCont.addReview = async function (req, res, next) {
+  try {
+    const { inv_id, rating, review_text } = req.body
+    const account_id = res.locals.accountData.account_id
+
+    await reviewModel.addReview(inv_id, account_id, rating, review_text)
+
+    req.flash("notice", "Thanks! Your review was added.")
+    return res.redirect(`/inv/detail/${inv_id}`)
+  } catch (error) {
+    next(error)
+  }
+}
+
+// Add / Update Dealer Response (Employee/Admin)
+invCont.addReviewResponse = async function (req, res, next) {
+  try {
+    const { review_id, inv_id, response_text } = req.body
+    const response_account_id = res.locals.accountData.account_id
+
+    await reviewModel.addResponse(review_id, response_text, response_account_id)
+
+    req.flash("notice", "Response saved.")
+    return res.redirect(`/inv/detail/${inv_id}`)
+  } catch (error) {
+    next(error)
+  }
+}
+
 
 
 module.exports = invCont

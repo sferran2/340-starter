@@ -104,6 +104,7 @@ async function addInventoryItem(
  * ************************** */
 async function updateInventory(
   inv_id,
+  inv_status,
   inv_make,
   inv_model,
   inv_description,
@@ -116,9 +117,25 @@ async function updateInventory(
   classification_id
 ) {
   try {
-    const sql =
-      "UPDATE public.inventory SET inv_make = $1, inv_model = $2, inv_description = $3, inv_image = $4, inv_thumbnail = $5, inv_price = $6, inv_year = $7, inv_miles = $8, inv_color = $9, classification_id = $10 WHERE inv_id = $11 RETURNING *"
+    const sql = `
+      UPDATE public.inventory
+      SET inv_status = $1,
+          inv_make = $2,
+          inv_model = $3,
+          inv_description = $4,
+          inv_image = $5,
+          inv_thumbnail = $6,
+          inv_price = $7,
+          inv_year = $8,
+          inv_miles = $9,
+          inv_color = $10,
+          classification_id = $11
+      WHERE inv_id = $12
+      RETURNING *;
+    `
+
     const data = await pool.query(sql, [
+      inv_status,
       inv_make,
       inv_model,
       inv_description,
@@ -131,11 +148,14 @@ async function updateInventory(
       classification_id,
       inv_id,
     ])
+
     return data.rows[0]
   } catch (error) {
     console.error("updateInventory model error: " + error)
+    throw error
   }
 }
+
 
 /* ***************************
  *  Delete Inventory Item
@@ -150,7 +170,48 @@ async function deleteInventoryItem(inv_id) {
   }
 }
 
+/* ***************************
+ *  Update Vehicle Status
+ * ************************** */
+
+async function updateVehicleStatus(inv_id, inv_status) {
+  try {
+    const sql = `
+      UPDATE public.inventory
+      SET inv_status = $1
+      WHERE inv_id = $2
+      RETURNING *;
+    `
+    const data = await pool.query(sql, [inv_status, inv_id])
+    return data.rows[0]
+  } catch (error) {
+    throw error
+  }
+}
+
+/* ***************************
+ * Get featured vehicle (Delorean) dynamically
+ * ************************** */
+async function getFeaturedVehicle() {
+  try {
+    const sql = `
+      SELECT i.inv_id, i.inv_make, i.inv_model
+      FROM public.inventory i
+      JOIN public.reviews r ON r.inv_id = i.inv_id
+      ORDER BY r.created_at DESC
+      LIMIT 1;
+    `
+    const data = await pool.query(sql)
+    return data.rows[0]
+  } catch (error) {
+    console.error("getFeaturedVehicle error: " + error)
+    throw error
+  }
+}
 
 
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryById, addClassification, addInventoryItem, updateInventory, deleteInventoryItem};
+module.exports = {
+  getClassifications, getInventoryByClassificationId, getInventoryById, addClassification,
+  addInventoryItem, updateInventory, deleteInventoryItem, updateVehicleStatus, getFeaturedVehicle
+};

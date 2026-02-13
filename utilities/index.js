@@ -82,14 +82,25 @@ Util.buildVehicleDetail = async function (vehicle) {
       <div class="vehicle-detail__content">
         <h2 class="vehicle-detail__title">${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
 
-        <p class="vehicle-detail__price"><strong>Price:</strong> ${price}</p>
         <p class="vehicle-detail__miles"><strong>Mileage:</strong> ${miles} miles</p>
         <p class="vehicle-detail__color"><strong>Color:</strong> ${vehicle.inv_color}</p>
+        <p class="vehicle-detail__status"><strong>Status:</strong> ${vehicle.inv_status}</p>
+        <p class="vehicle-detail__price"><strong>Price:</strong> ${price}</p>
+
 
         <div class="vehicle-detail__description">
           <h3>Description</h3>
           <p>${vehicle.inv_description}</p>
         </div>
+        
+        <p class="vehicle-detail__status">
+          <strong>Status:</strong> 
+          <span class="status-badge ${vehicle.inv_status.toLowerCase()}">
+            ${vehicle.inv_status}
+          </span>
+        </p>
+
+
       </div>
     </section>
   `
@@ -172,6 +183,26 @@ Util.checkAdminAccess = async (req, res, next) => {
     return next(error)
   }
 }
+
+/* ****************************************
+*  Check Client Authorization (only Client can review)
+**************************************** */
+Util.checkClientAccess = async (req, res, next) => {
+  try {
+    if (res.locals.loggedin && res.locals.accountData) {
+      const accountType = res.locals.accountData.account_type
+      if (accountType === "Client") {
+        return next()
+      }
+    }
+
+    req.flash("notice", "Only client accounts can leave reviews.")
+    return res.redirect("back")
+  } catch (error) {
+    return next(error)
+  }
+}
+
 
 
 /* ****************************************

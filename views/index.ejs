@@ -57,14 +57,24 @@
 
     <!-- RIGHT COLUMN -->
     <div class="reviews">
-        <h2>DMC Delorean Reviews</h2>
+        <h2>Latest Customer Reviews</h2>
 
         <ul class="review-list">
-            <li>“So fast it’s almost like traveling in time.” (4/5)</li>
-            <li>“Coolest ride on the road.” (4/5)</li>
-            <li>“I’m feeling McFly!” (5/5)</li>
-            <li>“The most futuristic ride of our day.” (4.5/5)</li>
-            <li>“80’s livin and I love it!” (5/5)</li>
+            <% if (latestReviews && latestReviews.length> 0) { %>
+                <% latestReviews.forEach(r=> { %>
+                    <li>
+                        <strong>
+                            <%= r.inv_make %>
+                                <%= r.inv_model %>
+                        </strong> —
+                        “<%= r.review_text %>” (<%= r.rating %>/5)
+                    </li>
+
+                    <% }) %>
+                        <% } else { %>
+                            <li>No reviews yet.</li>
+                            <% } %>
         </ul>
+
     </div>
 </section>
